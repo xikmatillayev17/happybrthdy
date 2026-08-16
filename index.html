@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #c92c37;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* --- SCREEN 1: LOCK SCREEN --- */
+        #lock-screen {
+            background-color: #c92c37;
+            flex-direction: row;
+            justify-content: space-around;
+            color: white;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 50px 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transform: rotate(-3deg);
+            text-align: center;
+            color: black;
+            width: 300px;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        .polaroid h2 {
+            font-family: 'Dancing Script', cursive;
+            margin-top: 15px;
+            font-size: 24px;
+        }
+
+        .keypad-container {
+            text-align: center;
+        }
+
+        .passcode-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 2px solid white;
+            background: transparent;
+        }
+
+        .dot.filled {
+            background: white;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .key {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .key:hover, .key:active {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* --- SCREEN 1.5: DATE SCREEN --- */
+        #date-screen {
+            background-color: #c92c37;
+            color: white;
+        }
+
+        .date-display {
+            font-size: 60px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0;
+            transform: scale(0.5);
+            position: relative;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .date-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, white 2px, transparent 2px), radial-gradient(circle, #fce4ec 3px, transparent 3px);
+            background-size: 40px 40px, 60px 60px;
+            background-position: 0 0, 20px 20px;
+            animation: fadeParticles 2s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeParticles {
+            0% { opacity: 0; transform: scale(0.8); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+            100% { opacity: 0; transform: scale(1.2); }
+        }
+
+        /* --- SCREEN 2: LOADING --- */
+        #loading-screen {
+            background-color: #faeded;
+            color: #333;
+        }
+
+        .loading-text {
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #c92c37;
+            transition: width 3s linear;
+        }
+
+        /* --- SCREEN 3: ENVELOPE --- */
+        #envelope-screen {
+            background-color: #c92c37;
+        }
+
+        .envelope-container {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .envelope-container:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope-container h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 40px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .envelope-container p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .envelope-image {
+            width: 300px;
+            height: auto;
+        }
+
+        /* --- SCREEN 4: LETTER --- */
+        #letter-screen {
+            background-image: url('orqa-fon-rasmi-uchun.jpg');
+            background-size: cover;
+            background-position: center;
+            flex-direction: row;
+        }
+
+        .letter-content {
+            background: rgba(255, 255, 255, 0.9);
+            width: 80%;
+            max-width: 900px;
+            height: 80vh;
+            border-radius: 10px;
+            display: flex;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .text-section {
+            flex: 1;
+            padding-right: 30px;
+            overflow-y: auto;
+        }
+        
+        .text-section h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #c92c37;
+            margin-bottom: 20px;
+        }
+
+        .text-section p {
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .photos-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .photos-section img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .btn-next {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #c92c37;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* --- SCREEN 5: CAKE & VIDEO & FIREWORKS --- */
+        #cake-screen {
+            background-color: #fce4ec;
+            transition: background-color 1.5s ease;
+        }
+        
+        #cake-screen.dark-mode {
+            background-color: #111;
+        }
+
+        .cake-container {
+            text-align: center;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .cake-img {
+            width: 200px;
+        }
+
+        .wish-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 40px;
+            color: #333;
+        }
+
+        /* VIDEO UCHUN CSS */
+        .birthday-video {
+            display: none; /* Boshida ko'rinmaydi */
+            width: 90%;
+            object-fit: cover;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+
+        /* YAKUNIY TABRIK MATNI UCHUN CSS */
+        .final-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 50px;
+            color: white;
+            z-index: 10;
+            display: none;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        .fireworks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif');
+            background-size: cover;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s;
+            z-index: 1;
+        }
+        
+        .show-fireworks {
+            opacity: 0.7;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen" class="screen active">
+        <div class="polaroid">
+            <img src="./cakewish.jpg" alt="Memory">
+            <h2>Happy Birthday<br>Baby</h2>
+        </div>
+        <div class="keypad-container">
+            <p style="margin-bottom: 20px; letter-spacing: 2px;">ENTER A PASSCODE</p>
+            <div class="passcode-display">
+                <div class="dot" id="dot-1"></div>
+                <div class="dot" id="dot-2"></div>
+                <div class="dot" id="dot-3"></div>
+                <div class="dot" id="dot-4"></div>
+                <div class="dot" id="dot-5"></div>
+                <div class="dot" id="dot-6"></div>
+            </div>
+            <div class="keypad">
+                <button class="key" onclick="pressKey('1')">1</button>
+                <button class="key" onclick="pressKey('2')">2</button>
+                <button class="key" onclick="pressKey('3')">3</button>
+                <button class="key" onclick="pressKey('4')">4</button>
+                <button class="key" onclick="pressKey('5')">5</button>
+                <button class="key" onclick="pressKey('6')">6</button>
+                <button class="key" onclick="pressKey('7')">7</button>
+                <button class="key" onclick="pressKey('8')">8</button>
+                <button class="key" onclick="pressKey('9')">9</button>
+                <button class="key" onclick="clearPass()">⌫</button>
+                <button class="key" onclick="pressKey('0')">0</button>
+                <button class="key" onclick="checkPass()">✓</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="date-screen" class="screen">
+        <div class="date-particles"></div>
+        <div class="date-display">
+            16 / 08 / 26
+        </div>
+    </div>
+
+    <div id="loading-screen" class="screen">
+        <div class="loading-text">
+            Hey you! 🎂<br><br>
+            <span style="font-size: 14px; color: #666;">Loading your birthday surprise...</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p style="color: #888; font-size: 12px;">(>_<)</p>
+    </div>
+
+    <div id="envelope-screen" class="screen">
+        <div class="envelope-container" onclick="openEnvelope()">
+            <h1>Happy Birthday! Baby</h1>
+            <p>I hope this little gift will make you happy.<br>The gift is like my love, it is thoughtfully wrapped and meant just for you.</p>
+            <img class="envelope-image" src="https://cdn-icons-png.flaticon.com/512/3238/3238018.png" alt="Envelope">
+        </div>
+    </div>
+
+    <div id="letter-screen" class="screen">
+        <div class="letter-content">
+            <div class="text-section">
+                <h1>Happy Birthday</h1>
+                <p>Tug'ilgan kuning bilan tabriklayman! Videodagi uzun matn juda xira bo'lgani sababli, bu yerga o'zingiz xohlagan samimiy va chiroyli so'zlarni yozishingiz mumkin.</p>
+                <p>Har bir kuning quvonchga to'la bo'lsin. Sen men uchun juda qadrlisan. Kelajakda barcha orzularing ushalishiga tilakdoshman.</p>
+                <button class="btn-next" onclick="goToCake()">Make a wish ➔</button>
+            </div>
+            <div class="text-section photos-section">
+                <img src="./p1.jpg" alt="Pic 1">
+                <img src="./p2.jpg" alt="Pic 2">
+                <img src="./p3.jpg" alt="Pic 3">
+            </div>
+        </div>
+    </div>
+
+    <div id="cake-screen" class="screen">
+        <div class="fireworks" id="fireworks"></div>
+        
+        <div class="cake-container" id="cake-container" onclick="playVideoSurprise()">
+            <h1 class="wish-text">Make a Wish 🎇</h1><br>
+            <img class="cake-img" src="https://cdn-icons-png.flaticon.com/512/3014/3014529.png" alt="Cake">
+        </div>
+
+        <video id="surprise-video" class="birthday-video">
+            <source src="./vd1.mp4" type="video/mp4">
+            Brauzeringiz videoni qo'llab-quvvatlamaydi.
+        </video>
+
+        <h1 class="final-text" id="final-text">Happy Birthday to You! ❤️</h1>
+    </div>
+
+    <script>
+        let passcode = "";
+        const CORRECT_PASS = "160826";
+
+        function updateDots() {
+            for(let i=1; i<=6; i++) {
+                let dot = document.getElementById(`dot-${i}`);
+                if(i <= passcode.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            }
+        }
+
+        function pressKey(num) {
+            if(passcode.length < 6) {
+                passcode += num;
+                updateDots();
+            }
+            if(passcode.length === 6) {
+                setTimeout(checkPass, 200);
+            }
+        }
+
+        function clearPass() {
+            passcode = passcode.slice(0, -1);
+            updateDots();
+        }
+
+        function checkPass() {
+            if(passcode === CORRECT_PASS) {
+                switchScreen('lock-screen', 'date-screen');
+                setTimeout(() => {
+                    switchScreen('date-screen', 'loading-screen');
+                    startLoading();
+                }, 2500);
+            } else {
+                alert("Noto'g'ri parol!");
+                passcode = "";
+                updateDots();
+            }
+        }
+
+        function switchScreen(oldId, newId) {
+            document.getElementById(oldId).classList.remove('active');
+            setTimeout(() => {
+                document.getElementById(newId).classList.add('active');
+            }, 50);
+        }
+
+        function startLoading() {
+            setTimeout(() => {
+                document.getElementById('progress-fill').style.width = '100%';
+            }, 100);
+
+            setTimeout(() => {
+                switchScreen('loading-screen', 'envelope-screen');
+            }, 3200);
+        }
+
+        function openEnvelope() {
+            switchScreen('envelope-screen', 'letter-screen');
+        }
+
+        function goToCake() {
+            switchScreen('letter-screen', 'cake-screen');
+        }
+
+        // --- YANGI VIDEO VA SALYUT MANTIG'I ---
+        function playVideoSurprise() {
+            const cakeScreen = document.getElementById('cake-screen');
+            const cakeContainer = document.getElementById('cake-container');
+            const surpriseVideo = document.getElementById('surprise-video');
+            const finalText = document.getElementById('final-text');
+            const fireworks = document.getElementById('fireworks');
+            
+            // 1. Ekranni qoraytiramiz
+            cakeScreen.classList.add('dark-mode');
+            
+            // 2. Tortni va yozuvni yashiramiz
+            cakeContainer.style.display = 'none';
+            
+            // 3. Videoni ko'rsatamiz va ishga tushiramiz
+            surpriseVideo.style.display = 'block';
+            surpriseVideo.play();
+            
+            // 4. Video tugaganidan keyin nima bo'lishini belgilaymiz
+            surpriseVideo.onended = function() {
+                // Videoni ekrandan olib tashlaymiz
+                surpriseVideo.style.display = 'none';
+                
+                // Salyut effektini yoqamiz
+                fireworks.classList.add('show-fireworks');
+                
+                // Yakuniy "Happy Birthday" yozuvini chiqaramiz
+                finalText.style.display = 'block';
+                setTimeout(() => {
+                    finalText.style.opacity = '1';
+                }, 100); // 0.1 soniya kutib animatsiya bilan chiqaradi
+            };
+        }
+    </script>
+</body>
+</html>
