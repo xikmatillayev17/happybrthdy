@@ -339,6 +339,20 @@
             padding: 0 15px;
         }
 
+        /* LOOP FON VIDEOSI UCHUN CSS */
+        .loop-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 1; /* Yozuvdan orqada, lekin eng orqa fondan oldinda turadi */
+            display: none; /* Boshida ko'rinmaydi */
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
         .fireworks {
             position: absolute;
             top: 0;
@@ -516,6 +530,9 @@
     </div>
 
     <div id="cake-screen" class="screen">
+        <video id="loop-bg-video" class="loop-bg" loop muted playsinline>
+            <source src="./vd3.mp4" type="video/mp4">
+        </video>
         <div class="fireworks" id="fireworks"></div>
         
         <div class="cake-container" id="cake-container" onclick="playVideoSurprise()">
@@ -600,12 +617,13 @@
             switchScreen('letter-screen', 'cake-screen');
         }
 
-        function playVideoSurprise() {
+function playVideoSurprise() {
             const cakeScreen = document.getElementById('cake-screen');
             const cakeContainer = document.getElementById('cake-container');
             const surpriseVideo = document.getElementById('surprise-video');
             const finalText = document.getElementById('final-text');
             const fireworks = document.getElementById('fireworks');
+            const loopBgVideo = document.getElementById('loop-bg-video'); // YANGA QO'SHILDI
             
             cakeScreen.classList.add('dark-mode');
             cakeContainer.style.display = 'none';
@@ -614,10 +632,20 @@
             surpriseVideo.play();
             
             surpriseVideo.onended = function() {
+                // Syurpriz videoni yashiramiz
                 surpriseVideo.style.display = 'none';
+                
+                // Salyut effektini yoqamiz (xohlasangiz buni o'chirib qo'yishingiz ham mumkin)
                 fireworks.classList.add('show-fireworks');
+                
+                // LOOP FON VIDEOSINI YOQAMIZ
+                loopBgVideo.style.display = 'block';
+                loopBgVideo.play();
+                
+                // Yakuniy yozuv va fon videosini silliq chiqaramiz
                 finalText.style.display = 'block';
                 setTimeout(() => {
+                    loopBgVideo.style.opacity = '1';
                     finalText.style.opacity = '1';
                 }, 100); 
             };
