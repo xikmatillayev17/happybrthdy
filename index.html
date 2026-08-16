@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Birthday!</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -44,6 +44,7 @@
             flex-direction: row;
             justify-content: space-around;
             color: white;
+            padding: 20px;
         }
 
         .polaroid {
@@ -131,6 +132,7 @@
             opacity: 0;
             transform: scale(0.5);
             position: relative;
+            text-align: center;
         }
 
         @keyframes popIn {
@@ -171,7 +173,8 @@
         }
 
         .progress-bar {
-            width: 300px;
+            width: 80%;
+            max-width: 300px;
             height: 10px;
             background: #ddd;
             border-radius: 5px;
@@ -188,7 +191,8 @@
 
         /* --- SCREEN 3: ENVELOPE --- */
         #envelope-screen {
-            background-color: #c92c37;
+            background-color: #faeded;
+            padding: 20px;
         }
 
         .envelope-container {
@@ -212,10 +216,12 @@
             font-size: 14px;
             color: #666;
             margin-bottom: 20px;
+            line-height: 1.5;
         }
 
         .envelope-image {
-            width: 300px;
+            width: 100%;
+            max-width: 300px;
             height: auto;
         }
 
@@ -224,16 +230,16 @@
             background-image: url('orqa-fon-rasmi-uchun.jpg');
             background-size: cover;
             background-position: center;
-            flex-direction: row;
         }
 
         .letter-content {
-            background: rgba(255, 255, 255, 0.9);
-            width: 80%;
+            background: rgba(255, 255, 255, 0.95);
+            width: 90%;
             max-width: 900px;
-            height: 80vh;
+            height: 85vh;
             border-radius: 10px;
             display: flex;
+            flex-direction: row;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
@@ -261,6 +267,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            overflow-y: auto;
         }
 
         .photos-section img {
@@ -272,12 +279,14 @@
 
         .btn-next {
             margin-top: 20px;
-            padding: 10px 20px;
+            padding: 12px 25px;
             background: #c92c37;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
         }
 
         /* --- SCREEN 5: CAKE & VIDEO & FIREWORKS --- */
@@ -287,7 +296,7 @@
         }
         
         #cake-screen.dark-mode {
-            background-color: #111;
+            background-color: #000; 
         }
 
         .cake-container {
@@ -306,17 +315,18 @@
             color: #333;
         }
 
-        /* VIDEO UCHUN CSS */
         .birthday-video {
-            display: none; /* Boshida ko'rinmaydi */
-            width: 90%;
+            display: none; 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
             object-fit: cover;
-            max-width: 800px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             z-index: 10;
+            background-color: #000;
         }
 
-        /* YAKUNIY TABRIK MATNI UCHUN CSS */
         .final-text {
             font-family: 'Dancing Script', cursive;
             font-size: 50px;
@@ -326,6 +336,7 @@
             text-align: center;
             opacity: 0;
             transition: opacity 2s ease;
+            padding: 0 15px;
         }
 
         .fireworks {
@@ -346,6 +357,86 @@
             opacity: 0.7;
         }
 
+        /* =========================================
+           MOBIL QURILMALAR UCHUN MOSLASHUV (CSS)
+           ========================================= */
+        @media screen and (max-width: 768px) {
+            #lock-screen {
+                flex-direction: column;
+                justify-content: center;
+                gap: 30px;
+            }
+
+            .polaroid {
+                width: 220px;
+                padding: 10px 10px 40px 10px;
+            }
+
+            .polaroid img {
+                height: 220px;
+            }
+
+            .polaroid h2 {
+                font-size: 20px;
+            }
+
+            .keypad {
+                gap: 10px;
+            }
+
+            .key {
+                width: 55px;
+                height: 55px;
+                font-size: 18px;
+            }
+
+            .date-display {
+                font-size: 40px;
+                letter-spacing: 3px;
+            }
+
+            .envelope-container h1 {
+                font-size: 32px;
+            }
+
+            .envelope-container p {
+                font-size: 13px;
+                padding: 0 10px;
+            }
+
+            .letter-content {
+                flex-direction: column;
+                padding: 20px;
+                height: 90vh;
+                overflow-y: auto; /* Telefonda xat va rasmlarni bitta qilib pastga skrol qilish */
+            }
+
+            .text-section {
+                padding-right: 0;
+                overflow-y: visible;
+                margin-bottom: 20px;
+            }
+
+            .photos-section {
+                overflow-y: visible;
+            }
+
+            .photos-section img {
+                height: auto; /* Rasmlar telefonda asliga mos nisbatda chiqadi */
+            }
+
+            .cake-img {
+                width: 150px;
+            }
+
+            .wish-text {
+                font-size: 30px;
+            }
+
+            .final-text {
+                font-size: 35px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -353,10 +444,10 @@
     <div id="lock-screen" class="screen active">
         <div class="polaroid">
             <img src="./cakewish.jpg" alt="Memory">
-            <h2>Happy Birthday<br>Baby</h2>
+            <h2>Happy Birthday<br>Aida</h2>
         </div>
         <div class="keypad-container">
-            <p style="margin-bottom: 20px; letter-spacing: 2px;">ENTER A PASSCODE</p>
+            <p style="margin-bottom: 15px; letter-spacing: 2px;">ENTER A PASSCODE</p>
             <div class="passcode-display">
                 <div class="dot" id="dot-1"></div>
                 <div class="dot" id="dot-2"></div>
@@ -397,7 +488,7 @@
         <div class="progress-bar">
             <div class="progress-fill" id="progress-fill"></div>
         </div>
-        <p style="color: #888; font-size: 12px;">(>_<)</p>
+        <p style="color: #888; font-size: 12px; margin-top: 10px;">(>_<)</p>
     </div>
 
     <div id="envelope-screen" class="screen">
@@ -432,7 +523,7 @@
             <img class="cake-img" src="https://cdn-icons-png.flaticon.com/512/3014/3014529.png" alt="Cake">
         </div>
 
-        <video id="surprise-video" class="birthday-video">
+        <video id="surprise-video" class="birthday-video" playsinline>
             <source src="./vd1.mp4" type="video/mp4">
             Brauzeringiz videoni qo'llab-quvvatlamaydi.
         </video>
@@ -509,7 +600,6 @@
             switchScreen('letter-screen', 'cake-screen');
         }
 
-        // --- YANGI VIDEO VA SALYUT MANTIG'I ---
         function playVideoSurprise() {
             const cakeScreen = document.getElementById('cake-screen');
             const cakeContainer = document.getElementById('cake-container');
@@ -517,29 +607,19 @@
             const finalText = document.getElementById('final-text');
             const fireworks = document.getElementById('fireworks');
             
-            // 1. Ekranni qoraytiramiz
             cakeScreen.classList.add('dark-mode');
-            
-            // 2. Tortni va yozuvni yashiramiz
             cakeContainer.style.display = 'none';
             
-            // 3. Videoni ko'rsatamiz va ishga tushiramiz
             surpriseVideo.style.display = 'block';
             surpriseVideo.play();
             
-            // 4. Video tugaganidan keyin nima bo'lishini belgilaymiz
             surpriseVideo.onended = function() {
-                // Videoni ekrandan olib tashlaymiz
                 surpriseVideo.style.display = 'none';
-                
-                // Salyut effektini yoqamiz
                 fireworks.classList.add('show-fireworks');
-                
-                // Yakuniy "Happy Birthday" yozuvini chiqaramiz
                 finalText.style.display = 'block';
                 setTimeout(() => {
                     finalText.style.opacity = '1';
-                }, 100); // 0.1 soniya kutib animatsiya bilan chiqaradi
+                }, 100); 
             };
         }
     </script>
